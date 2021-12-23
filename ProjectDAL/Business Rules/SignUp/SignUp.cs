@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using ProjectDAL.Constant;
 using ProjectDAL.Custom;
+using ProjectDAL.DataModels;
 using ProjectDAL.DTO;
 using System;
 using System.Collections.Generic;
@@ -13,26 +15,86 @@ namespace ProjectDAL.Business_Rules.SignUp
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public SignUp(UserManager<ApplicationUser> UserManager,SignInManager<ApplicationUser> signInManager)
+        public SignUp(UserManager<ApplicationUser> UserManager,SignInManager<ApplicationUser> signInManager,RoleManager<IdentityRole> roleManager)
         {
             userManager = UserManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
         }
 
-        public async Task<dynamic> Register(SignUpDTO UserData)
+        public async Task<dynamic> Register(DtoSignUp UserData)
         {
-            var user = new ApplicationUser
+            try
             {
-                UserName = UserData.UserName,
-                FirstName = UserData.FirstName,
-                LastName = UserData.LastName,
-                Email = UserData.Email,
-                Dob = UserData.Dob
-            };
-            var result = await userManager.CreateAsync(user, UserData.Password);
+                using(TrainingContext dbContext = new TrainingContext())
+                {
+                    if (UserData != null)
+                    {
+                        var isExist = await userManager.FindByEmailAsync(UserData.Email);
 
-            return result;
+                        if (isExist != null)
+                            return status.duplicate;
+                        else
+                        {
+                            var user = new ApplicationUser
+                            {
+                                UserName = UserData.UserName,
+                                Email = UserData.Email
+                            };
+
+                            var create = await userManager.CreateAsync(user, UserData.Password);
+                            
+                            if (create.Succeeded)
+                            {
+                                var userAuth = await userManager.FindByEmailAsync(UserData.Email);
+                                User newUser = new()
+                                {
+                                    FirstName = UserData.FirstName,
+                                    LastName = UserData.LastName,
+                                    AuthId = userAuth.Id,
+                                    StatusId = 1,
+                                    Address = UserData.Address,
+                                    Dob = UserData.Dob
+                                };
+
+                                dbContext.Users.Add(newUser);
+                                var userCreated = dbContext.SaveChanges();
+                                var temp = await userManager.FindByIdAsync(userAuth.Id);
+                                var role = await roleManager.FindByIdAsync("4");
+                                
+                                await userManager.AddToRoleAsync(temp, role.Name);
+
+                                var userDetail = dbContext.Users.FirstOrDefault(x => x.AuthId == userAuth.Id);
+
+                                UserDetail newUserDetails = new()
+                                {
+                                    UserDetailId = userDetail.UserId,
+                                    DateOfJoin = DateTime.Now.ToString("yyyy-MM-dd"),
+                                };
+
+                                dbContext.UserDetails.Add(newUserDetails);
+                                dbContext.SaveChanges();
+
+                                return status.sucess;
+
+                            }
+                            else
+                                return status.fail;
+                        }
+                    }
+                    else
+                        return status.fail;
+                }
+                
+            }
+            catch(Exception error)
+            {
+                return status.fail;
+            }
+           
+            
         }
 
 

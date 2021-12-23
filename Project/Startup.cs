@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProjectDAL.Business_Rules.EditRole;
+using ProjectDAL.Business_Rules.LogIn;
 using ProjectDAL.Business_Rules.SignUp;
 using ProjectDAL.Custom;
 using ProjectDAL.DataModels;
@@ -43,6 +45,8 @@ namespace Project
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conncetionString));
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             services.AddScoped<ISignUp, SignUp>();
+            services.AddScoped<ILogIn, LogIn>();
+            services.AddScoped<IEditRole, EditRole>();
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(x =>

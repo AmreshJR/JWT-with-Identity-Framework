@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectDAL.Business_Rules.SignUp
+namespace ProjectDAL.Business_Rules.LogIn
 {
-    public interface ISignUp
+    public interface ILogIn
     {
-        public Task<dynamic> Register(DtoSignUp UserData);
+        public Task<dynamic> Login(DtoLogin UserData);
     }
 }

@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ProjectDAL.DataModels
 {
-    public partial class Training_2Context : DbContext
+    public partial class TrainingContext : DbContext
     {
-        public Training_2Context()
+        public TrainingContext()
         {
         }
 
-        public Training_2Context(DbContextOptions<Training_2Context> options)
+        public TrainingContext(DbContextOptions<TrainingContext> options)
             : base(options)
         {
         }
@@ -24,6 +24,9 @@ namespace ProjectDAL.DataModels
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
+        public virtual DbSet<Status> Statuses { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserDetail> UserDetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -123,6 +126,75 @@ namespace ProjectDAL.DataModels
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.AspNetUserTokens)
                     .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<Status>(entity =>
+            {
+                entity.ToTable("Status");
+
+                entity.Property(e => e.StatusId).ValueGeneratedNever();
+
+                entity.Property(e => e.StatusName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Address).IsUnicode(false);
+
+                entity.Property(e => e.AuthId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.Dob)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Auth)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.AuthId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Users_AspNetUsers1");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Users_Status1");
+            });
+
+            modelBuilder.Entity<UserDetail>(entity =>
+            {
+                entity.Property(e => e.UserDetailId).ValueGeneratedNever();
+
+                entity.Property(e => e.CurrentOrganizationName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateOfJoin)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Experiance)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PreviousOrganizationName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);
