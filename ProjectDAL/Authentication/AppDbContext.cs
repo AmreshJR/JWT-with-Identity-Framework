@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ProjectDAL.Authentication;
 using ProjectDAL.Custom;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,9 @@ namespace ProjectDAL.DataModels
             }
 
         public virtual DbSet<GetAllUser> GetAllUsers { get; set; }
+        public virtual DbSet<UserByRole> UserByRoles { get; set; }
+        public virtual DbSet<TeamDetail> TeamDetails { get; set; }
+        public virtual DbSet<InactiveEmployee> InactiveEmployees { get; set; }
 
             protected override void OnModelCreating(ModelBuilder builder)
             {

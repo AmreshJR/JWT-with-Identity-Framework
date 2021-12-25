@@ -17,5 +17,6 @@ namespace ProjectDAL.DataModels
 
         public virtual AspNetUser Auth { get; set; }
         public virtual Status Status { get; set; }
+        public virtual UserTeam UserTeam { get; set; }
     }
 }

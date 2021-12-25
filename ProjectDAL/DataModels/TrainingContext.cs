@@ -25,8 +25,10 @@ namespace ProjectDAL.DataModels
         public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
+        public virtual DbSet<TeamType> TeamTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
+        public virtual DbSet<UserTeam> UserTeams { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -140,6 +142,18 @@ namespace ProjectDAL.DataModels
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<TeamType>(entity =>
+            {
+                entity.HasKey(e => e.TeamId);
+
+                entity.ToTable("TeamType");
+
+                entity.Property(e => e.TeamName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(e => e.Address).IsUnicode(false);
@@ -195,6 +209,25 @@ namespace ProjectDAL.DataModels
                 entity.Property(e => e.PreviousOrganizationName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<UserTeam>(entity =>
+            {
+                entity.HasKey(e => e.UserId);
+
+                entity.ToTable("UserTeam");
+
+                entity.Property(e => e.UserId).ValueGeneratedNever();
+
+                entity.Property(e => e.AssignedToUser)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.User)
+                    .WithOne(p => p.UserTeam)
+                    .HasForeignKey<UserTeam>(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserTeam_Users");
             });
 
             OnModelCreatingPartial(modelBuilder);

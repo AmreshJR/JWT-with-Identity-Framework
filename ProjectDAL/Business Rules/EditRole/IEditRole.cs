@@ -1,4 +1,6 @@
-﻿using ProjectDAL.Dto;
+﻿using MiniProjectDAL.DTO;
+using ProjectDAL.Authentication;
+using ProjectDAL.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,14 @@ namespace ProjectDAL.Business_Rules.EditRole
     public interface IEditRole
     {
         public Task<dynamic> editRole(string userId, string roleId);
-        public dynamic GetAllUser();
+        public dynamic GetAllUser(DtoPageNation PageData);
         public Task<int> UpdateRole(DtoUpdateRole UserData);
+        public List<DtoRole> GetAllRole();
+        public string GetUserLength();
+        public List<UserByRole> UserByRole(string UserRole);
+        public List<TeamDetail> TeamDetail(string LeadName);
+        public List<InactiveEmployee> GetInactive();
+        public dynamic GetTeamType();
+        public int UpdateTeamData(DtoUpdateTeam UserData);
     }
 }
