@@ -60,7 +60,14 @@ namespace Project.Controllers
         {
             try
             {
-                return Ok(new { logIn.Login(UserData).Result });
+                var result = logIn.Login(UserData).Result;
+
+                if (result != null)
+
+                    return Ok(result);
+
+                else
+                    return StatusCode(StatusCodes.Status204NoContent);
             }
             catch(Exception error)
             {

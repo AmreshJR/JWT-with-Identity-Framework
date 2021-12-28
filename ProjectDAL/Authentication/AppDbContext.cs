@@ -25,6 +25,7 @@ namespace ProjectDAL.DataModels
         public virtual DbSet<UserByRole> UserByRoles { get; set; }
         public virtual DbSet<TeamDetail> TeamDetails { get; set; }
         public virtual DbSet<InactiveEmployee> InactiveEmployees { get; set; }
+        public virtual DbSet<UserProfileDetails> UserProfileDetail { get; set; }
 
             protected override void OnModelCreating(ModelBuilder builder)
             {

@@ -30,17 +30,18 @@ namespace ProjectDAL.Business_Rules.LogIn
         public async Task<dynamic> Login(DtoLogin UserData)
         {
             var user = await userManager.FindByEmailAsync(UserData.Email);
-            if(user != null && await userManager.CheckPasswordAsync(user, UserData.Password))
+            if (user != null && await userManager.CheckPasswordAsync(user, UserData.Password))
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:IssuerSignInKey"]));
                 var SignInCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
                 var userRole = await userManager.GetRolesAsync(user);
-                var claims = new List<Claim> 
+                var claims = new List<Claim>
                 {
-                    
-                    new Claim(ClaimTypes.UserData,user.Id)
+                    new Claim("UserId",user.Id),
+                    new Claim("UserName",user.UserName)
+
                 };
-                foreach(var role in userRole)
+                foreach (var role in userRole)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role));
                 }
@@ -53,12 +54,12 @@ namespace ProjectDAL.Business_Rules.LogIn
                     );
                 string tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-                return new{ Token =  tokenString, TokenExp =  token.ValidTo.ToString("yyyy-MM-dd-HH-MM") };
+                return new { Token = tokenString, TokenExp = token.ValidTo.ToString("yyyy-MM-dd-HH-MM") };
             }
-        
+
             else
 
-            return new { };
+                return null;
         }
     }
 }

@@ -28,6 +28,7 @@ namespace ProjectDAL.DataModels
         public virtual DbSet<TeamType> TeamTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
+        public virtual DbSet<UserImageLibrary> UserImageLibraries { get; set; }
         public virtual DbSet<UserTeam> UserTeams { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -209,6 +210,26 @@ namespace ProjectDAL.DataModels
                 entity.Property(e => e.PreviousOrganizationName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.ProfileImage)
+                    .WithMany(p => p.UserDetails)
+                    .HasForeignKey(d => d.ProfileImageId)
+                    .HasConstraintName("FK_UserDetails_UserImageLibrary");
+            });
+
+            modelBuilder.Entity<UserImageLibrary>(entity =>
+            {
+                entity.HasKey(e => e.ImageId);
+
+                entity.ToTable("UserImageLibrary");
+
+                entity.Property(e => e.ImageName)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(450);
             });
 
             modelBuilder.Entity<UserTeam>(entity =>

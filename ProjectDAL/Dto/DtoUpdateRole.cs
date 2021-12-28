@@ -11,5 +11,7 @@ namespace ProjectDAL.Dto
         public string UserName { get; set; }
         public string OldRole { get; set; }
         public string NewRole { get; set; }
+        public string Email { get; set; }
+        public string AuthId { get; set; }
     }
 }

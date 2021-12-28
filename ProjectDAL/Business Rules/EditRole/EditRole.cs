@@ -63,12 +63,15 @@ namespace ProjectDAL.Business_Rules.EditRole
         {
             try
             {
-                var user = await userManager.FindByNameAsync(UserData.UserName);
+                var user = await userManager.FindByIdAsync(UserData.AuthId);
 
                 if (user != null)
                 {
-                    await userManager.RemoveFromRoleAsync(user, UserData.OldRole);
+                    user.UserName = UserData.UserName;
+                    user.Email = UserData.Email;
+                    await userManager.UpdateAsync(user);
 
+                    await userManager.RemoveFromRoleAsync(user, UserData.OldRole);
                     await userManager.AddToRoleAsync(user, UserData.NewRole);
 
                     return status.sucess;

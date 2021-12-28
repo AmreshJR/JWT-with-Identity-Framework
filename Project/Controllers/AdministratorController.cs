@@ -14,8 +14,9 @@ namespace Project.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-/*    [Authorize(Roles = "Manager")]
-*/    public class AdministratorController : ControllerBase
+/*    [Authorize(Roles = "Manager")]*/
+
+    public class AdministratorController : ControllerBase
     {
         private readonly IEditRole editRole;
 
@@ -52,8 +53,8 @@ namespace Project.Controllers
             }
         }
         [HttpPost]
-        [Route("UpdateRole")]
-        public IActionResult UpdateRole(DtoUpdateRole UserData)
+        [Route("UpdateUser")]
+        public IActionResult UpdateUser(DtoUpdateRole UserData)
         {
             try
             {

@@ -54,7 +54,7 @@ namespace ProjectDAL.Business_Rules.SignUp
                                     FirstName = UserData.FirstName,
                                     LastName = UserData.LastName,
                                     AuthId = userAuth.Id,
-                                    StatusId = 1,
+                                    StatusId = 2,
                                     Address = UserData.Address,
                                     Dob = UserData.Dob
                                 };
@@ -72,6 +72,7 @@ namespace ProjectDAL.Business_Rules.SignUp
                                 {
                                     UserDetailId = userDetail.UserId,
                                     DateOfJoin = DateTime.Now.ToString("yyyy-MM-dd"),
+                                    CurrentOrganizationName = "Optisol Business Solution"
                                 };
 
                                 dbContext.UserDetails.Add(newUserDetails);

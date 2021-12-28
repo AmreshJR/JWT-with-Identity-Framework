@@ -16,4 +16,8 @@
     <ProjectReference Include="..\ProjectDAL\ProjectDAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resource\Image\" />
+  </ItemGroup>
+
 </Project>

@@ -12,5 +12,8 @@ namespace ProjectDAL.DataModels
         public string DateOfJoin { get; set; }
         public string PreviousOrganizationName { get; set; }
         public string CurrentOrganizationName { get; set; }
+        public int? ProfileImageId { get; set; }
+
+        public virtual UserImageLibrary ProfileImage { get; set; }
     }
 }

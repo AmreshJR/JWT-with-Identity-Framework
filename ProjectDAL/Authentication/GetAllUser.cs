@@ -16,6 +16,10 @@ namespace ProjectDAL.DataModels
 
         public string Role { get; set; }
 
+        public string Email { get; set; }
+
         public string StatusName { get; set; }
+
+        public string AuthId { get; set; }
     }
 }
