@@ -64,10 +64,11 @@ namespace Project.Controllers
 
                 if (result != null)
 
-                    return Ok(result);
+                    return Ok(new {Status = StatusCodes .Status200OK ,  Result = result });
 
                 else
-                    return StatusCode(StatusCodes.Status204NoContent);
+
+                    return Ok(new {status = StatusCodes.Status204NoContent });
             }
             catch(Exception error)
             {

@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProjectDAL.Authentication;
+using ProjectDAL.Constant;
+using ProjectDAL.Custom;
 using ProjectDAL.DataModels;
+using ProjectDAL.Dto;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +18,17 @@ using System.Threading.Tasks;
 namespace ProjectDAL.Business_Rules.UserDetails
 {
     public class UserDetails : IUserDetails
+
     {
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+
+        public UserDetails(UserManager<ApplicationUser> UserManager,SignInManager<ApplicationUser> signInManager)
+        {
+            userManager = UserManager;
+            this.signInManager = signInManager;
+        }
+
         public UserProfileDetails GetUserProfileDetail(string UserId)
         {
 
@@ -73,14 +87,14 @@ namespace ProjectDAL.Business_Rules.UserDetails
                             dbContext.SaveChanges();
                         }
                     }
-                    return 1;
+                    return status.sucess;
                 }
 
-                return 2;
+                return status.fail;
             }
             catch(Exception error)
             {
-                return 2;
+                return status.fail;
             }
             
 
@@ -92,14 +106,72 @@ namespace ProjectDAL.Business_Rules.UserDetails
                 using(TrainingContext dbContext = new TrainingContext())
                 {
                     var user = dbContext.UserImageLibraries.FirstOrDefault(x => x.UserId == UserId);
-                    var userProfileLink = user.ImageName;
-                    return userProfileLink;
+                    if (user != null)
+                    {
+                        var userProfileLink = user.ImageName;
+                        return userProfileLink;
+                    }
+                    else
+                        return null;
                 }
                 
             }
             catch(Exception error)
             {
                 return null;
+            }
+        }
+
+        public async Task<int> UpdateProfileData(string AuthId,DtoUserProfileDetails UserProfileObject)
+        {
+            try
+            {
+                var authUser = await userManager.FindByIdAsync(AuthId);
+               
+                using(TrainingContext dbContext = new TrainingContext())
+                {
+                    var user = dbContext.Users.FirstOrDefault(x => x.AuthId == authUser.Id);
+
+                    user.FirstName = UserProfileObject.FirstName;
+                    user.LastName = UserProfileObject.LastName;
+                    user.Address = UserProfileObject.Address;
+
+                    dbContext.Users.Update(user);
+                    dbContext.SaveChanges();
+                    var userDetail = dbContext.UserDetails.FirstOrDefault(y => y.UserDetailId == user.UserId);
+
+                    userDetail.Experiance = UserProfileObject.Experiance;
+                    userDetail.PreviousOrganizationName = UserProfileObject.PreviousOrganizationName;
+
+                    dbContext.UserDetails.Update(userDetail);
+                    dbContext.SaveChanges();
+
+                    return status.sucess;
+
+                }
+                
+            }
+            catch(Exception error)
+            {
+                return status.fail;
+            }
+        }
+
+        public async Task<int> ConfirmPassword(DtoConfirmPassword UserData,string AuthId)
+        {
+            try
+            {
+                var user = await userManager.FindByIdAsync(AuthId);
+
+                if (user != null && await userManager.CheckPasswordAsync(user, UserData.Password))
+
+                    return status.sucess;
+                else
+                    return status.fail;
+            }
+            catch(Exception error)
+            {
+                return status.fail;
             }
         }
     }
