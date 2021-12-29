@@ -11,7 +11,6 @@ namespace ProjectDAL.Business_Rules.EditRole
 {
     public interface IEditRole
     {
-        public Task<dynamic> editRole(string userId, string roleId);
         public dynamic GetAllUser(DtoPageNation PageData);
         public Task<int> UpdateRole(DtoUpdateRole UserData);
         public List<DtoRole> GetAllRole();

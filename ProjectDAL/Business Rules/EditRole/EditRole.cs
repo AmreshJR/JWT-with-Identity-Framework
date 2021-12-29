@@ -17,28 +17,12 @@ namespace ProjectDAL.Business_Rules.EditRole
     public class EditRole : IEditRole
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
 
-        public EditRole(UserManager<ApplicationUser> UserManager,RoleManager<IdentityRole> RoleManager)
+        public EditRole(UserManager<ApplicationUser> UserManager)
         {
             userManager = UserManager;
-            roleManager = RoleManager;
         }
-        public async Task<dynamic> editRole(string userId, string roleId)
-        {
-            var role =await roleManager.FindByIdAsync(roleId);
-            var user = await userManager.FindByIdAsync(userId);
-            IdentityResult result = null;
-            result = await userManager.AddToRoleAsync(user,role.Name);
-
-            if (result.Succeeded)
-
-                return true;
-
-            else
-                return false;
-        }
-
+       
         public dynamic GetAllUser(DtoPageNation PageData)
         {
             using(AppDbContext dbContext = new AppDbContext())
@@ -46,7 +30,7 @@ namespace ProjectDAL.Business_Rules.EditRole
                 try
                 {
                     var users = dbContext.GetAllUsers.FromSqlRaw("GetAllUserAdmin").ToList();
-                    var userSliced = users.Skip((int)(PageData.NoOfData * (PageData.Page))).Take((int)PageData.NoOfData).ToList();
+                    var userSliced = users.Skip((PageData.NoOfData * (PageData.Page))).Take(PageData.NoOfData).ToList();
 
                     return userSliced;
                 }
@@ -74,16 +58,16 @@ namespace ProjectDAL.Business_Rules.EditRole
                     await userManager.RemoveFromRoleAsync(user, UserData.OldRole);
                     await userManager.AddToRoleAsync(user, UserData.NewRole);
 
-                    return status.sucess;
+                    return ResponseStatus.sucess;
                 }
 
                 else
 
-                    return status.fail;
+                    return ResponseStatus.fail;
             }
             catch(Exception error)
             {
-                return status.fail;
+                return ResponseStatus.fail;
             }
             
         }
@@ -94,9 +78,9 @@ namespace ProjectDAL.Business_Rules.EditRole
             {
                 using (TrainingContext dbContext = new TrainingContext())
                 {
-                    List<DtoRole> roles = new List<DtoRole>();
+                    
                     var role = dbContext.AspNetRoles.ToList();
-                    roles = role.ConvertAll(x => new DtoRole
+                    var roles = role.ConvertAll(x => new DtoRole
                     {
                         Role = x.Name
                     });
@@ -222,15 +206,15 @@ namespace ProjectDAL.Business_Rules.EditRole
                         user.StatusId = UserData.StatusId;
                         dbContext.Users.Update(user);
                         dbContext.SaveChanges();
-                        return status.sucess;
+                        return ResponseStatus.sucess;
                     }
                     else
-                        return status.duplicate;
+                        return ResponseStatus.duplicate;
                     
                 }
                 catch(Exception error)
                 {
-                    return status.fail;
+                    return ResponseStatus.fail;
                 }
             }
         }

@@ -8,7 +8,7 @@ namespace ProjectDAL.Dto
 {
     public class DtoEdit
     {
-        public string roleId { get; set; }
-        public string userId { get; set; }
+        public string RoleId { get; set; }
+        public string UserId { get; set; }
     }
 }

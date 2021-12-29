@@ -25,13 +25,6 @@ namespace Project.Controllers
             editRole = EditRole;
         }
         [HttpPost]
-        [Route("EditUserRole")]
-
-        public IActionResult EditUserRole([FromBody]DtoEdit userdata)
-        { 
-            return Ok(editRole.editRole(userdata.userId, userdata.roleId).Result);
-        }
-        [HttpPost]
         [Route("GetAllUser")]
 
         public IActionResult GetAllUser(DtoPageNation PageData)
@@ -40,7 +33,7 @@ namespace Project.Controllers
             {
                 var users = editRole.GetAllUser(PageData);
 
-                if (User != null)
+                if (users != null)
 
                     return Ok(editRole.GetAllUser(PageData));
                 else
@@ -60,7 +53,7 @@ namespace Project.Controllers
             {
                 var response = editRole.UpdateRole(UserData).Result;
 
-                if (response == status.sucess)
+                if (response == ResponseStatus.sucess)
 
                     return Ok(new { StatusCodes.Status200OK, status = true });
 

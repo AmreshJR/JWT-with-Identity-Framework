@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectDAL.Business_Rules.LogIn;
 using ProjectDAL.Business_Rules.SignUp;
-using ProjectDAL.Common;
 using ProjectDAL.Constant;
 using ProjectDAL.DTO;
 using System;
@@ -33,11 +32,11 @@ namespace Project.Controllers
             {
                 var result = signUp.Register(UserData).Result;
 
-                if (result == status.sucess)
+                if (result == ResponseStatus.sucess)
 
                     return Ok(new { StatusCode = StatusCodes.Status200OK, Status = true });
 
-                else if (result == status.fail)
+                else if (result == ResponseStatus.fail)
 
                     return Ok(new {StatusCode =  StatusCodes.Status204NoContent, Status = false } );
 

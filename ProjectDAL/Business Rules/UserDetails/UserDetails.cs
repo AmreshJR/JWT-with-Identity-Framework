@@ -60,7 +60,6 @@ namespace ProjectDAL.Business_Rules.UserDetails
                 {
                     var imageName = new String(Path.GetFileNameWithoutExtension(file.FileName).Take(10).ToArray()).Replace(' ', '-');
                     imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(file.FileName);
-                    /* var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');*/
                     var fullPath = Path.Combine(pathToSave, imageName);
                     var dbPath = Path.Combine(folderName, imageName);
                     using (Stream stream = new FileStream(fullPath, FileMode.Create))
@@ -87,14 +86,14 @@ namespace ProjectDAL.Business_Rules.UserDetails
                             dbContext.SaveChanges();
                         }
                     }
-                    return status.sucess;
+                    return ResponseStatus.sucess;
                 }
 
-                return status.fail;
+                return ResponseStatus.fail;
             }
             catch(Exception error)
             {
-                return status.fail;
+                return ResponseStatus.fail;
             }
             
 
@@ -146,14 +145,14 @@ namespace ProjectDAL.Business_Rules.UserDetails
                     dbContext.UserDetails.Update(userDetail);
                     dbContext.SaveChanges();
 
-                    return status.sucess;
+                    return ResponseStatus.sucess;
 
                 }
                 
             }
             catch(Exception error)
             {
-                return status.fail;
+                return ResponseStatus.fail;
             }
         }
 
@@ -165,13 +164,13 @@ namespace ProjectDAL.Business_Rules.UserDetails
 
                 if (user != null && await userManager.CheckPasswordAsync(user, UserData.Password))
 
-                    return status.sucess;
+                    return ResponseStatus.sucess;
                 else
-                    return status.fail;
+                    return ResponseStatus.fail;
             }
             catch(Exception error)
             {
-                return status.fail;
+                return ResponseStatus.fail;
             }
         }
     }

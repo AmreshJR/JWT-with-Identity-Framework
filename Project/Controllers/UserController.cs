@@ -51,7 +51,7 @@ namespace Project.Controllers
                 var authId = User.Claims.First(x => x.Type == "UserId").Value;
                 var file = Request.Form.Files[0];
                 var result = userDetail.UpdateUserProfile(file, authId);
-                if (result == status.sucess)
+                if (result == ResponseStatus.sucess)
                 {
                     return Ok(result);
                 }
@@ -73,7 +73,6 @@ namespace Project.Controllers
                 var authId = User.Claims.First(x => x.Type == "UserId").Value;
                 var result = userDetail.GetUserProfileImage(authId);
                 if (result != null)
-
                     return Ok(new { StatusCodes.Status200OK,dbPath = result });
 
                 else
@@ -94,7 +93,7 @@ namespace Project.Controllers
                 var authId = User.Claims.First(x => x.Type == "UserId").Value;
                 var result = userDetail.UpdateProfileData(authId, ProfileData).Result;
 
-                if (result == status.sucess)
+                if (result == ResponseStatus.sucess)
                     return Ok(new { StatusCodes.Status200OK, Status = true });
                 else
                     return StatusCode(StatusCodes.Status204NoContent);
@@ -113,7 +112,7 @@ namespace Project.Controllers
             {
                 var authId = User.Claims.First(x => x.Type == "UserId").Value;
                 var result = userDetail.ConfirmPassword(UserData, authId).Result;
-                if (result == status.sucess)
+                if (result == ResponseStatus.sucess)
                     return Ok(new { StatusCodes.Status200OK, Status = true });
                 else
                     return Ok(new { StatusCodes.Status204NoContent ,Status = false});

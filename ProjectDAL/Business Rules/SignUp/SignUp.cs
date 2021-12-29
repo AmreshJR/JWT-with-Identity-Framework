@@ -35,7 +35,7 @@ namespace ProjectDAL.Business_Rules.SignUp
                         var isExist = await userManager.FindByEmailAsync(UserData.Email);
 
                         if (isExist != null)
-                            return status.duplicate;
+                            return ResponseStatus.duplicate;
                         else
                         {
                             var user = new ApplicationUser
@@ -60,7 +60,7 @@ namespace ProjectDAL.Business_Rules.SignUp
                                 };
 
                                 dbContext.Users.Add(newUser);
-                                var userCreated = dbContext.SaveChanges();
+                                dbContext.SaveChanges();
                                 var temp = await userManager.FindByIdAsync(userAuth.Id);
                                 var role = await roleManager.FindByIdAsync("4");
                                 
@@ -78,21 +78,21 @@ namespace ProjectDAL.Business_Rules.SignUp
                                 dbContext.UserDetails.Add(newUserDetails);
                                 dbContext.SaveChanges();
 
-                                return status.sucess;
+                                return ResponseStatus.sucess;
 
                             }
                             else
-                                return status.fail;
+                                return ResponseStatus.fail;
                         }
                     }
                     else
-                        return status.fail;
+                        return ResponseStatus.fail;
                 }
                 
             }
             catch(Exception error)
             {
-                return status.fail;
+                return ResponseStatus.fail;
             }
            
             

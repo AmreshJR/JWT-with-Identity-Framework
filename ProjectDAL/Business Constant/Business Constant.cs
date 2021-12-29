@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectDAL.Constant
 {
-    public static class status
+    public static class ResponseStatus
     {
         public const int sucess = 1;
         public const int fail = 2;
