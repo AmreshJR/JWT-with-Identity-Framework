@@ -14,8 +14,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProjectDAL.Authentication;
 using ProjectDAL.Business_Rules.EditRole;
+using ProjectDAL.Business_Rules.EmailSender;
 using ProjectDAL.Business_Rules.LogIn;
+using ProjectDAL.Business_Rules.PasswordReset;
 using ProjectDAL.Business_Rules.SignUp;
 using ProjectDAL.Business_Rules.UserDetails;
 using ProjectDAL.Custom;
@@ -48,11 +51,16 @@ namespace Project
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Project", Version = "v1" });
             });
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conncetionString));
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+            services.Configure<DataProtectionTokenProviderOptions>(opts => opts.TokenLifespan = TimeSpan.FromMinutes(10));
             services.AddScoped<ISignUp, SignUp>();
             services.AddScoped<ILogIn, LogIn>();
             services.AddScoped<IEditRole, EditRole>();
             services.AddScoped<IUserDetails, UserDetails>();
+            var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IPasswordReset, PasswordReset>();
             services.Configure<FormOptions>(o =>
             {
                 o.ValueLengthLimit = int.MaxValue;

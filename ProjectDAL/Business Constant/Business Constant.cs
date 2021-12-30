@@ -12,5 +12,11 @@ namespace ProjectDAL.Constant
         public const int fail = 2;
         public const int duplicate = 3;
     }
+    public static class ResetResponse
+    {
+        public const int success = 1;
+        public const int failed = 2;
+        public const int tokenExpired = 3; 
+    }
      
 }
