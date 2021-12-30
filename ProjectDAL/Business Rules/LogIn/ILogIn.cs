@@ -10,5 +10,6 @@ namespace ProjectDAL.Business_Rules.LogIn
     public interface ILogIn
     {
         public Task<dynamic> Login(DtoLogin UserData);
+       /* public void Send(string mail,string callBack);*/
     }
 }

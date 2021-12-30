@@ -42,9 +42,8 @@ namespace ProjectDAL.Business_Rules.PasswordReset
                         { "email", ForgetPasswordObject.Email }
                     };
                     var callBack = QueryHelpers.AddQueryString(ForgetPasswordObject.ClientURI, param);
-                    var message = new Message(new string[] { user.Email }, "Reset Password", callBack);
 
-                    await emailSender.SendEmailAsync(message);
+                    emailSender.Send(ForgetPasswordObject.Email,callBack);
                     return ResponseStatus.sucess;
                 }
             }
