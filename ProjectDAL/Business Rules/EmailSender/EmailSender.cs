@@ -57,6 +57,7 @@ namespace ProjectDAL.Business_Rules.EmailSender
 
 
 
+
         /*private readonly EmailConfiguration emailConfig;
 
         public EmailSender(EmailConfiguration EmailConfig)

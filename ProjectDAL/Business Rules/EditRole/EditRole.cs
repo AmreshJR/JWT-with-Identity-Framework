@@ -90,7 +90,7 @@ namespace ProjectDAL.Business_Rules.EditRole
             }
             catch(Exception error)
             {
-                return null;
+                throw error;
             }
             
         }
@@ -109,7 +109,7 @@ namespace ProjectDAL.Business_Rules.EditRole
             }
             catch (Exception error)
             {
-                return null;
+                throw error;
             }
 
                 
@@ -128,7 +128,7 @@ namespace ProjectDAL.Business_Rules.EditRole
                 }
                 catch (Exception error)
                 {
-                    return null;
+                    throw error;
                 }
 
             }
@@ -145,7 +145,7 @@ namespace ProjectDAL.Business_Rules.EditRole
                 }
                 catch (Exception error)
                 {
-                    return null;
+                    throw error;
                 }
 
             }
@@ -162,7 +162,7 @@ namespace ProjectDAL.Business_Rules.EditRole
                 }
                 catch (Exception error)
                 {
-                    return null;
+                    throw error;
                 }
 
             }
