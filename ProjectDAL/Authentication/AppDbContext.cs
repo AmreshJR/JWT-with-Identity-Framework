@@ -26,7 +26,6 @@ namespace ProjectDAL.DataModels
         public virtual DbSet<TeamDetail> TeamDetails { get; set; }
         public virtual DbSet<InactiveEmployee> InactiveEmployees { get; set; }
         public virtual DbSet<UserProfileDetails> UserProfileDetail { get; set; }
-        public virtual DbSet<FilteredList> FilteredLists { get; set; }
 
   
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

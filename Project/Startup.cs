@@ -17,7 +17,6 @@ using Microsoft.OpenApi.Models;
 using ProjectDAL.Authentication;
 using ProjectDAL.Business_Rules.EditRole;
 using ProjectDAL.Business_Rules.EmailSender;
-using ProjectDAL.Business_Rules.Filter;
 using ProjectDAL.Business_Rules.LogIn;
 using ProjectDAL.Business_Rules.PasswordReset;
 using ProjectDAL.Business_Rules.SignUp;
@@ -62,7 +61,6 @@ namespace Project
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IPasswordReset, PasswordReset>();
-            services.AddScoped<IFilter, Filter>(); 
             services.Configure<FormOptions>(o =>
             {
                 o.ValueLengthLimit = int.MaxValue;
