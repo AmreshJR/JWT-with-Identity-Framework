@@ -47,7 +47,7 @@ namespace ProjectDAL.Business_Rules.PasswordReset
                     return ResponseStatus.sucess;
                 }
             }
-            catch
+            catch(Exception error)
             {
                 return ResponseStatus.fail;
             }
