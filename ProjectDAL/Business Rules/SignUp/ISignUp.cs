@@ -9,6 +9,6 @@ namespace ProjectDAL.Business_Rules.SignUp
 {
     public interface ISignUp
     {
-        public Task<dynamic> Register(SignUpDTO UserData);
+        public Task<dynamic> Register(DtoSignUp UserData);
     }
 }

@@ -13,12 +13,10 @@ namespace ProjectDAL.DataModels
             AspNetUserLogins = new HashSet<AspNetUserLogin>();
             AspNetUserRoles = new HashSet<AspNetUserRole>();
             AspNetUserTokens = new HashSet<AspNetUserToken>();
+            Users = new HashSet<User>();
         }
 
         public string Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Dob { get; set; }
         public string UserName { get; set; }
         public string NormalizedUserName { get; set; }
         public string Email { get; set; }
@@ -38,5 +36,6 @@ namespace ProjectDAL.DataModels
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRole> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

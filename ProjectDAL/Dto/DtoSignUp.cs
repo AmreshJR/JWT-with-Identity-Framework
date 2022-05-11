@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace ProjectDAL.DTO
 {
-    public class SignUpDTO
+    public class DtoSignUp
     {
         public string Id { get; set; }
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public string Address { get; set; }
 
         public string Dob { get; set; }
 
